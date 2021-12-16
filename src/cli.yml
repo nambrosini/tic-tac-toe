@@ -1,0 +1,31 @@
+name: Tic-Tac-Toe
+version: "1.0"
+author: Nico A.
+about: Tic-Tac-Toe app with RL and Minimax agents
+args:
+    - training:
+        short: t
+        long: train
+        help: Trains an agent
+    - training-cycles:
+        short: c
+        long: training-cycles
+        value_name: cycles
+        help: How many cycles will the agent train for, divided in half for X and the other for O. Default <50000>.
+        default_value: "50000"
+        takes_value: true
+    - agent:
+        short: a
+        long: agent
+        help: Plays against an agent, default true.
+    - agent-name:
+        short: n
+        long: agent-name
+        value_name: name
+        help: The agent's name, to save and load configs. Default <p1>. Provide two values to make two agents play against eachother.
+        default_value: "a1"
+    - minimax:
+        short: m
+        long: minimax
+        help: If the player plays against the minmax alg. Provide -a to make it play against an agent and -n to play against a custom named agent.
+        
