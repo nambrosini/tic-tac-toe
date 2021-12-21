@@ -1,14 +1,11 @@
 use crate::game::Board;
-use cached::proc_macro::cached;
 
 pub fn minimax_search(board: &Board, my_sign: u8) -> usize {
-    let board: &'static [u8; 9] = &board.board;
-    let (_, action) = max_value(&board, i32::MIN, i32::MAX, my_sign);
+    let (_, action) = max_value(&board.board, i32::MIN, i32::MAX, my_sign);
     action.unwrap()
 }
 
-#[cached]
-fn max_value(board: &'static [u8; 9], alpha: i32, beta: i32, my_sign: u8) -> (i32, Option<usize>) {
+fn max_value(board: &[u8; 9], alpha: i32, beta: i32, my_sign: u8) -> (i32, Option<usize>) {
     let winner = check_winner(board, my_sign);
     if let Some(result) = winner {
         return (result, None);
@@ -39,7 +36,6 @@ fn max_value(board: &'static [u8; 9], alpha: i32, beta: i32, my_sign: u8) -> (i3
     (max, action)
 }
 
-#[cached]
 fn min_value(board: &[u8; 9], alpha: i32, beta: i32, my_sign: u8) -> (i32, Option<usize>) {
     let winner = check_winner(board, my_sign);
     if let Some(result) = winner {

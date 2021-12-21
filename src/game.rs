@@ -96,7 +96,7 @@ impl fmt::Display for Board {
             } else {
                 write!(f, "|")?;
             }
-            write!(f, " {} ", self.board[i])?;
+            write!(f, " {} ", self.board[i] as char)?;
         }
         writeln!(f)
     }

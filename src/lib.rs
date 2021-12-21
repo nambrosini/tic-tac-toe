@@ -287,12 +287,14 @@ pub fn play_agent_vs_minimax(agent_name: &str) {
         std::process::exit(1);
     }
 
+    static GAMES: usize = 100;
+
     println!();
-    for i in 0..100 {
+    for i in 0..GAMES {
         let mut board = Board::new();
         let mut winner = board.get_winner();
 
-        let agent_begins = i < 50;
+        let agent_begins = i < GAMES / 2;
 
         while !winner.0 {
             let turn = board.get_turn();
