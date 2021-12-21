@@ -18,6 +18,7 @@ args:
         short: a
         long: agent
         help: Plays against an agent, default true.
+        multiple: true
     - agent-name:
         short: n
         long: agent-name

@@ -9,7 +9,6 @@ pub struct Agent {
     name: String,
     states: Vec<String>,
     lr: f32,
-    decay: f32,
     pub states_values: HashMap<String, f32>,
     exp_rate: f32,
 }
@@ -20,9 +19,8 @@ impl Agent {
             name: name.to_string(),
             states: vec![],
             lr: 0.2,
-            decay: 0.9,
             states_values: HashMap::new(),
-            exp_rate: 0.3,
+            exp_rate: 0.1,
         }
     }
 
@@ -76,7 +74,7 @@ impl Agent {
         Ok(())
     }
 
-    pub fn get_best_action(&self, board: &Board, turn: char) -> usize {
+    pub fn get_best_action(&self, board: &Board, turn: u8) -> usize {
         let mut action: usize = 0;
         let positions = board.get_available();
         let mut rng = rand::thread_rng();
@@ -103,7 +101,7 @@ impl Agent {
         let mut reward = reward;
         for s in self.states.iter().rev() {
             let entry = self.states_values.entry(s.clone()).or_insert(0.0);
-            *entry += self.lr * (self.decay * reward - *entry);
+            *entry += self.lr * (reward - *entry);
             reward = *entry;
         }
     }

@@ -1,11 +1,14 @@
 use crate::game::Board;
+use cached::proc_macro::cached;
 
-pub fn minimax_search(board: &Board, my_sign: char) -> usize {
-    let (_, action) = max_value(&board.board, i32::MIN, i32::MAX, my_sign);
+pub fn minimax_search(board: &Board, my_sign: u8) -> usize {
+    let board: &'static [u8; 9] = &board.board;
+    let (_, action) = max_value(&board, i32::MIN, i32::MAX, my_sign);
     action.unwrap()
 }
 
-fn max_value(board: &[char; 9], alpha: i32, beta: i32, my_sign: char) -> (i32, Option<usize>) {
+#[cached]
+fn max_value(board: &'static [u8; 9], alpha: i32, beta: i32, my_sign: u8) -> (i32, Option<usize>) {
     let winner = check_winner(board, my_sign);
     if let Some(result) = winner {
         return (result, None);
@@ -36,7 +39,8 @@ fn max_value(board: &[char; 9], alpha: i32, beta: i32, my_sign: char) -> (i32, O
     (max, action)
 }
 
-fn min_value(board: &[char; 9], alpha: i32, beta: i32, my_sign: char) -> (i32, Option<usize>) {
+#[cached]
+fn min_value(board: &[u8; 9], alpha: i32, beta: i32, my_sign: u8) -> (i32, Option<usize>) {
     let winner = check_winner(board, my_sign);
     if let Some(result) = winner {
         return (result, None);
@@ -49,7 +53,7 @@ fn min_value(board: &[char; 9], alpha: i32, beta: i32, my_sign: char) -> (i32, O
 
     for p in get_availables(board) {
         let mut new_board = *board;
-        new_board[p] = if my_sign == 'X' { 'O' } else { 'X' };
+        new_board[p] = if my_sign == b'X' { b'O' } else { b'X' };
 
         let (v, _) = max_value(&new_board, alpha, beta, my_sign);
         if v < min {
@@ -67,7 +71,7 @@ fn min_value(board: &[char; 9], alpha: i32, beta: i32, my_sign: char) -> (i32, O
     (min, action)
 }
 
-fn check_winner(board: &[char; 9], my_sign: char) -> Option<i32> {
+fn check_winner(board: &[u8; 9], my_sign: u8) -> Option<i32> {
     for i in 0..3 {
         if equals_3(board[i], board[i + 3], board[i + 6]) {
             if board[i] == my_sign {
@@ -102,22 +106,22 @@ fn check_winner(board: &[char; 9], my_sign: char) -> Option<i32> {
         }
     }
 
-    if board.iter().filter(|c| c == &&' ').count() == 0 {
+    if board.iter().filter(|&&c| c == b' ').count() == 0 {
         return Some(0);
     }
 
     None
 }
 
-fn equals_3(a: char, b: char, c: char) -> bool {
-    a == b && b == c && a != ' '
+fn equals_3(a: u8, b: u8, c: u8) -> bool {
+    a == b && b == c && a != b' '
 }
 
-fn get_availables(board: &[char; 9]) -> Vec<usize> {
+fn get_availables(board: &[u8; 9]) -> Vec<usize> {
     board
         .iter()
         .enumerate()
-        .filter(|(_, e)| e == &&' ')
+        .filter(|(_, &e)| e == b' ')
         .map(|(i, _)| i)
         .collect()
 }

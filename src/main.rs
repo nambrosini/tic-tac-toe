@@ -17,14 +17,24 @@ fn main() {
 
     let minimax = matches.is_present("minimax");
 
+    let agents_num = matches.occurrences_of("agent");
+
+    println!("{}", agents_num);
+
     if train {
-        tictactoe::train(agent_name, training_cycles);
+        if minimax {
+            tictactoe::train_with_minimax(agent_name, training_cycles)
+        } else {
+            tictactoe::train(agent_name, training_cycles);
+        }
     } else if minimax {
         if agent {
             tictactoe::play_agent_vs_minimax(agent_name);
         } else {
             tictactoe::play_minimax()
         }
+    } else if agents_num > 1 {
+        tictactoe::play_multiple("a1", "a2")
     } else {
         tictactoe::play(agent_name)
     }
