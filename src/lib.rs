@@ -212,7 +212,7 @@ fn read_human_input() -> usize {
         let mut position = String::new();
 
         if let Err(e) = io::stdin().read_line(&mut position) {
-            eprintln!("{}", e.to_string());
+            eprintln!("{}", e);
             continue;
         };
 
@@ -226,7 +226,7 @@ fn read_human_input() -> usize {
                 }
             }
             Err(e) => {
-                eprintln!("{}", e.to_string());
+                eprintln!("{}", e);
                 continue;
             }
         };
