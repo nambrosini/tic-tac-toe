@@ -1,6 +1,6 @@
 /target
-/data
+/data/policy_*
 output.txt
-policy*
 Cargo.lock
 .DS_Store
+.vscode
